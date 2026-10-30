@@ -6,6 +6,9 @@ TagManager:
   tags:
   - projectile
   - rat
+  - PlayerBullet
+  - GalagaPlayer
+  - Enemy
   layers:
   - Default
   - TransparentFX

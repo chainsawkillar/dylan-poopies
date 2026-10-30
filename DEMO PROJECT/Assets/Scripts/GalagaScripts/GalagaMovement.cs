@@ -1,0 +1,50 @@
+using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+
+public class GalagaMovement : MonoBehaviour
+{
+    public float speed = 5;
+    public GameObject bullet;
+    public Image[] lives;
+    public int lifeCount = 3;
+    // Update is called once per frame
+    void Update()
+    {
+        if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
+        {
+            transform.Translate(-transform.right * speed * Time.deltaTime);
+        }
+        if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow))
+        {
+            transform.Translate(transform.right * speed * Time.deltaTime);
+        }
+        if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow))
+        {
+            transform.Translate(transform.up * speed * Time.deltaTime);
+        }
+        if (Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow))
+        {
+            transform.Translate(-transform.up * speed * Time.deltaTime);
+        }
+        if(Input.GetKeyUp(KeyCode.Space))
+        {
+            Instantiate(bullet, transform.position + new Vector3(0, .5f, 0), Quaternion.identity);
+        }
+        transform.position = new Vector3(transform.position.x, Mathf.Clamp(transform.position.y, -3.5f, 3.5f), transform.position.z);
+    }
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if(collision.gameObject.CompareTag("Enemy"))
+        {
+            lifeCount -= 1;
+            if (lifeCount <= 0)
+            {
+                lifeCount = 0;
+                SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            }
+            lives[lifeCount].enabled = false;
+        }
+
+    }
+}
